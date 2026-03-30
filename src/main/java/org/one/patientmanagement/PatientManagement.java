@@ -3,7 +3,13 @@ package org.one.patientmanagement;
 import com.google.inject.Guice;
 import java.awt.EventQueue;
 import java.sql.Connection;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import org.one.patientmanagement.repository.RepositoryModule;
 import org.one.patientmanagement.service.ServiceModule;
 import org.one.patientmanagement.storage.DatabaseInitializer;
@@ -27,13 +33,36 @@ public class PatientManagement {
                 injector.getInstance(Connection.class);
                 injector.getInstance(DatabaseInitializer.class).init();
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(
-                        null,
-                        "Failed to start: " + e.getMessage(),
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
+                showErrorDialog(e);
             }
         });
+    }
+
+    private static void showErrorDialog(Exception e) {
+        JLabel label = new JLabel("Error details:");
+        label.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+        JTextArea textArea = new JTextArea(e.getMessage());
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new java.awt.Dimension(400, 200));
+        scrollPane.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        panel.add(label);
+        panel.add(Box.createVerticalStrut(5));
+        panel.add(scrollPane);
+
+        JOptionPane.showMessageDialog(
+                null,
+                panel,
+                "Failed to start",
+                JOptionPane.ERROR_MESSAGE
+        );
     }
 }

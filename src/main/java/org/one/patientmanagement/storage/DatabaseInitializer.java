@@ -1,17 +1,16 @@
 package org.one.patientmanagement.storage;
 
 import com.google.inject.Inject;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
+import javax.sql.DataSource;
 
 public class DatabaseInitializer {
 
-    private final Connection connection;
+    private final DataSource dataSource;
 
     @Inject
-    public DatabaseInitializer(Connection c) {
-        this.connection = c;
+    public DatabaseInitializer(DataSource ds) {
+        this.dataSource = ds;
     }
     
     public void init() {
@@ -151,7 +150,8 @@ public class DatabaseInitializer {
     }
 
     private void execute(String sql) {
-        try (Statement stmt = connection.createStatement()) {
+        try (var conn = dataSource.getConnection();
+             var stmt = conn.createStatement()) {
             stmt.execute(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
