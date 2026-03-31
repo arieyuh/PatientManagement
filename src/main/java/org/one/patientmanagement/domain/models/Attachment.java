@@ -1,7 +1,6 @@
 package org.one.patientmanagement.domain.models;
 
 import java.time.LocalDateTime;
-import org.one.patientmanagement.domain.enums.AttachmentStatus;
 
 /**
  * Represents an attachment of any file.
@@ -14,7 +13,6 @@ public record Attachment(
         String name,
         Long doctorId,
         Long patientId,
-        AttachmentStatus status,
         LocalDateTime createdAt
 ) {
     public Attachment {
@@ -23,9 +21,6 @@ public record Attachment(
         }
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("name is required");
-        }
-        if (status == null) {
-            throw new IllegalArgumentException("status is required");
         }
         if (createdAt == null) {
             throw new IllegalArgumentException("createdAt is required");
