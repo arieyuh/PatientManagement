@@ -28,9 +28,7 @@ public interface PatientManager {
     Optional<Patient> getByAccountId(long accountId);
 
     List<Patient> getPatients();
-    
-    List<Doctor> getDoctors(long patientId);
-    
+        
     Prescription recordPrescription(@Nonnull Prescription prescription);
     
     void removePrescription(@Nonnull Prescription prescription);
